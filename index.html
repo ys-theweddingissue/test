@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yusaku & Saori | Wedding Invitation</title>
+    
+    <!-- Google Fonts: Lato と Noto Sans JP を適用 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- (CDN版) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- ==========================================
+         CSS セクション
+         ========================================== -->
+    <style>
+        :root {
+            --color-bg: #FAF8F5;       /* 温かみのある背景色 */
+            --color-text: #4A4238;     /* ダークブラウンのテキスト */
+            --color-accent: #8C9A8E;   /* セージグリーン（差し色） */
+            --color-border: #D3CBB8;   /* ライトブラウン（装飾枠） */
+        }
+
+        body {
+            /* 全体のフォントをLatoベースに設定 */
+            font-family: 'Lato', 'Noto Sans JP', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            letter-spacing: 0.05em;
+        }
+
+        /* 英語特化用のクラス */
+        .font-lato {
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* スクロールアニメーション用クラス */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 写真ホバー時のエフェクト (モノクロ＆ズーム) */
+        .photo-effect-container {
+            overflow: hidden;
+        }
+        .photo-effect {
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s ease;
+        }
+        /* hover対象の親コンテナまたは要素自体にホバーした時 */
+        .photo-effect-container:hover .photo-effect,
+        .photo-effect:hover {
+            transform: scale(1.08);
+            filter: grayscale(100%);
+        }
+
+        /* 背景画像のパララックス風効果 */
+        .bg-fixed-mobile {
+            background-attachment: scroll;
+        }
+        @media (min-width: 768px) {
+            .bg-fixed-mobile {
+                background-attachment: fixed;
+            }
+        }
+        
+        /* --- アルバム無限スクロール用（JS制御用） --- */
+        /* アルバム専用：JSで制御するためCSSアニメーションはオフにする */
+        .album-container {
+            cursor: grab;
+            overflow: hidden; /* スクロールバーを隠す */
+            touch-action: pan-y; /* 縦スクロールは生かし、横はJSで制御 */
+            user-select: none;   /* ドラッグ中にテキスト選択されないようにする */
+        }
+
+        .album-container:active {
+            cursor: grabbing;
+        }
+
+        .album-track {
+            display: flex;
+            width: max-content;
+            will-change: transform;
+        }
+
+
+        /* ホバーでスクロール一時停止 */
+        .album-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* ポップアップメニューのブラー背景 */
+        .menu-backdrop {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* ギャラリーボタン*/
+        .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        @keyframes fadeUp {
+        0% {
+            opacity: 0;
+            transform: translateY(30px) scale(1);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        }
+
+        @keyframes pulseScale {
+        0%,100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.08);
+        }
+        }
+
+      
+
+        .link-btn{
+        position: relative;
+        overflow: hidden;
+        }
+
+        .link-btn::after{
+        content:"";
+        position:absolute;
+        top:0;
+        left:-100%;
+        width:100%;
+        height:100%;
+        background:linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.6),
+            transparent
+        );
+        animation:
+            fadeUp 1s ease forwards,
+            pulseScale 2s ease-in-out 1s infinite;
+        }
+
+        @keyframes shine{
+        0%{ left:-100%;}
+        100%{ left:200%;}
+        }
+
+        .link-btn{
+          display:inline-block;
+          padding:12px 24px;
+          background:#000;
+          /* background:#8C9A8E;  */
+          color:#fff;
+          text-decoration:none;
+          border-radius:10px;
+          transition:0.3s;
+          animation: pulseScale 2s ease-in-out infinite;
+        }
+        .link-btn:hover{
+          opacity:1;
+        }
+
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wedding: {
+                            bg: '#FAF8F5',
+                            text: '#4A4238',
+                            accent: '#8C9A8E',
+                            border: '#D3CBB8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased selection:bg-wedding-accent selection:text-white">
+
+    <!-- ==========================================
+         HTML 構造セクション
+         ========================================== -->
+
+    <!-- ヘッダー＆ナビゲーション -->
+    <header class="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-6 py-4 bg-wedding-bg/80 backdrop-blur-md transition-all duration-300" id="header">
+        <a href="#home" id="logo-link" class="font-lato text-xl tracking-widest font-bold cursor-pointer hover:text-wedding-accent transition-colors">
+           Y & S
+           <!-- Yusaku & Saori -->
+        </a>
+        <button id="menu-btn" class="p-2 focus:outline-none hover:scale-110 transition-transform">
+            <i data-lucide="menu" class="w-6 h-6 text-wedding-text" id="menu-icon"></i>
+        </button>
+    </header>
+
+    <!-- ポップアップメニュー (修正点: 初期状態を hidden にして透明な壁を消す) -->
+    <div id="overlay-menu" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-500 ease-in-out menu-backdrop bg-wedding-bg/60">
+        <!-- メニューコンテナ -->
+        <div id="menu-content" class="bg-white/90 shadow-2xl rounded-3xl p-10 transform scale-95 opacity-0 transition-all duration-500 ease-in-out text-center border border-wedding-border/30 max-w-sm w-full mx-4">
+            <nav class="flex flex-col items-center space-y-6 text-xl font-lato font-light tracking-wider">
+                <a href="#home" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">HOME</a>
+                <a href="#prologue" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">PROLOGUE</a>
+                <a href="#profile" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">PROFILE</a>
+                <a href="#our-story" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">OUR STORY</a>
+                <a href="#seating-guide" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">GUEST</a>
+                <a href="#cuisine" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">CUISINE</a>
+                <a href="#special-memories" class="menu-link hover:text-wedding-accent hover:scale-105 transition-all">SPECIAL MEMORY</a>
+            </nav>
+            <div class="mt-10 pt-6 border-t border-wedding-border/30 text-xs tracking-[0.2em] text-wedding-text/50">
+                2026.9.12
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- 1. HOME -->
+        <section id="home" class="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0 pointer-events-none">
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 border border-wedding-border z-[-1] transition-trans form duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+                  <!-- 最初のページの写真 -->
+                <img src="https://res.cloudinary.com/dmfyysmqy/image/upload/v1772627723/IMG_4182_rmjeew.jpg" alt="Wedding Background" class="w-full h-full object-cover opacity-80 bg-fixed-mobile transition-transform duration-[20s] ease-linear hover:scale-110">
+                <div class="absolute inset-0 bg-wedding-text/30"></div>
+            </div>
+            
+            <div class="relative z-10 text-center text-white fade-up pointer-events-none">
+                <h1 class="font-lato text-5xl md:text-7xl font-light tracking-[0.25em] mb-4 drop-shadow-lg">YUSAKU</h1>
+                <h1 class="font-lato text-5xl md:text-7xl font-light tracking-[0.25em] mb-4 drop-shadow-lg">&</h1>
+                <h1 class="font-lato text-5xl md:text-7xl font-light tracking-[0.25em] mb-4 drop-shadow-lg">SAORI</h1>
+                <p class="font-lato font-light tracking-[0.3em] text-sm md:text-base mb-8 uppercase drop-shadow-md">Welcome to our wedding</p>
+                <p class="text-sm tracking-widest font-light drop-shadow-md">2026.9.12
+                </p>
+            </div>
+
+            <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-10 pointer-events-none">
+                <span class="font-lato text-white text-xs tracking-[0.2em] mb-2 font-light">SCROLL</span>
+                
+            </div>
+        </section>
+
+
+
+        <!-- 2. PROLOGUE -->
+        <section id="prologue" class="py-24 px-6 md:px-12 max-w-4xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="font-lato text-4xl mb-2 font-light tracking-[0.25em]">PROLOGUE</h2>
+                <span class="text-xs tracking-widest text-wedding-accent">ごあいさつ</span>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-full md:w-1/2 relative fade-up photo-effect-container rounded-sm shadow-lg">
+                      <!-- ページの写真 -->
+                    <img src="https://res.cloudinary.com/dmfyysmqy/image/upload/v1772804846/d193729f3ae7888b4c1b2a7b808f9de9_jfi39i.jpg" alt="Greeting Image" class="w-full h-auto aspect-[4/3] object-cover photo-effect">
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 border border-wedding-border z-[-1] transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+                </div>
+                <div class="w-full md:w-1/2 text-sm leading-loose tracking-wider space-y-6 fade-up font-light">
+                    <p>皆様におかれましては<br>お健やかにお過ごしのこととお慶び申し上げます</p>
+                    <p>この度 私たちは結婚式を挙げることとなりました<br>今日という日を迎えられたのも<br>皆様の温かい支えがあったからこそと<br>心より感謝申し上げます</p>
+                    <p>ささやかではございますが<br>感謝の気持ちを込めて 小宴をご用意いたしました<br>皆様と楽しく 穏やかなひとときを<br>過ごせますと幸いです</p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- 3. PROFILE -->
+        <section id="profile" class="py-24 px-6 md:px-12 bg-white">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16 fade-up">
+                    <!-- <h2 class="font-lato text-4xl mb-2 font-light italic">Profile</h2> -->
+                    <h2 class="font-lato text-4xl mb-2 font-light tracking-[0.25em]">PROFILE</h2>
+                    <span class="text-xs tracking-widest text-wedding-accent">新郎新婦紹介</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 md:gap-16">
+                    <!-- Groom -->
+                    <div class="fade-up flex flex-col items-center group">
+                        <div class="w-full relative mb-6 photo-effect-container border-b-2 border-wedding-border pb-1" style="border-radius: 1000px 1000px 0 0;">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800" alt="Groom" class="w-full aspect-[3/4] object-cover photo-effect" style="border-radius: 1000px 1000px 0 0;">
+                        </div>
+                        <h3 class="font-lato text-2xl tracking-widest mb-1">YUSAKU</h3>
+                        <p class="text-xs mb-6 text-wedding-text/60">Groom</p>
+                        <ul class="text-[10px] md:text-sm space-y-4 w-full border-t border-wedding-border/30 pt-4 font-light">
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">生年月日</span>1997.3.9</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">出身地</span>長野県長野市</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">趣味</span>プロバスケ観戦</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">特技</span>大きな声を出すこと</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">大切にしている家訓</span>食に妥協しない</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">理想の休日の過ごし方</span>昼からビール</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">好きな映画</span>言の葉の庭</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">好きなディズニーのアトラクション</span>シンドバット</li>
+                        </ul>
+                    </div>
+
+                    <!-- Bride -->
+                    <div class="fade-up flex flex-col items-center group" style="transition-delay: 200ms;">
+                        <div class="w-full relative mb-6 photo-effect-container border-b-2 border-wedding-border pb-1" style="border-radius: 1000px 1000px 0 0;">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800" alt="Bride" class="w-full aspect-[3/4] object-cover photo-effect" style="border-radius: 1000px 1000px 0 0;">
+                        </div>
+                        <h3 class="font-lato text-2xl tracking-widest mb-1">SAORI</h3>
+                        <p class="text-xs mb-6 text-wedding-text/60">Bride</p>
+                        <ul class="text-[10px] md:text-sm space-y-4 w-full border-t border-wedding-border/30 pt-4 font-light">
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">生年月日</span>1996.10.12</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">出身地</span>愛知県豊川市</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">趣味</span>旅行・映画鑑賞</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">特技</span>どこでも寝れること</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">大切にしている家訓</span>食に貪欲に</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">理想の休日の過ごし方</span>冷凍ストック量産</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">好きな映画</span>ジュラシック</li>
+                            <li class="flex flex-col"><span class="text-wedding-accent font-lato text-[9px] mb-1 tracking-wider uppercase">好きなディズニーのアトラクション</span>魅惑のチキルーム</li>
+                        </ul>
+                    </div>
+
+                    <!-- Bride -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+
+        <!-- 4. OUR STORY -->
+        <section id="our-story" class="py-24 px-6 md:px-12 max-w-3xl mx-auto relative bg-[#FAF8F5]">
+            <div class="text-center mb-12 fade-up">
+                <h2 class="font-lato text-4xl mb-2 font-light tracking-[0.25em]">OUR STORY</h2>
+
+                <span class="text-xs tracking-widest text-wedding-accent">ふたりの歩み</span>
+                <p class="text-xs mt-6 text-wedding-text/70">
+                    私たちは出会ってから今まで、<br>
+                    それぞれの場所でそれぞれの人生を自由に歩んできました。<br><br>
+                    遠く離れて過ごす時間もありましたが、<br>
+                    その距離があったからこそお互いの大切さを知り、<br>
+                    ふたりの絆はより深まったように思います。
+                </p>
+
+            </div>
+
+            <!-- マップエリア -->
+            <!-- <div class="relative w-full aspect-[4/5] md:aspect-square bg-white border border-wedding-border p-4 rounded-xl shadow-sm fade-up"> -->
+            <div class="relative w-full mx-auto aspect-square bg-white border border-wedding-border p-4 rounded-xl shadow-sm fade-up">
+
+                <!-- 日本地図（JPG） -->
+                <img src="https://res.cloudinary.com/dmfyysmqy/image/upload/v1772634562/Gemini_Generated_Image_wphffmwphffmwphf_hdtluq_rbwy0g.png"
+                  class="w-full h-full opacity-50 object-cover"
+                  alt="background decorative image"
+                />
+
+                <div id="map-pins-container" class="absolute inset-0"></div>
+            </div>
+
+            <!-- ストーリー表示モーダル (修正点: 初期状態を hidden にして透明な壁を消す) -->
+            <div id="story-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                <!-- 背景の暗転部分 -->
+                <div class="absolute inset-0 bg-black/50 backdrop-blur-sm modal-bg cursor-pointer"></div>
+                <!-- コンテンツエリア -->
+                <div class="bg-wedding-bg w-[90%] max-w-sm rounded-2xl p-6 relative transform scale-95 transition-transform duration-300 shadow-2xl" id="story-modal-content">
+                    <!-- 右上閉じるボタン -->
+                    <button class="absolute top-4 right-4 text-wedding-text/50 hover:text-wedding-text transition-colors modal-close focus:outline-none bg-white rounded-full p-1 shadow-sm z-10">
+                        <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
+                    </button>
+                    
+                    <div class="photo-effect-container rounded-lg mb-4">
+                        <img id="story-img" src="" alt="Story" class="w-full aspect-[4/3] object-cover photo-effect">
+                    </div>
+                    <p id="story-date" class="font-lato text-wedding-accent text-xs mb-1 tracking-widest"></p>
+                    <h4 id="story-title" class="font-bold text-lg mb-3 border-b border-wedding-border/30 pb-2"></h4>
+                    <p id="story-desc" class="text-sm leading-relaxed font-light text-wedding-text/80"></p>
+                </div>
+            </div>
+            <div class="text-center mb-12 fade-up">
+                <p class="text-xs mt-6 text-wedding-text/70">
+                    それぞれの街で育ち、それぞれの時間を過ごしてきた私たち<br>
+                    家族や友人に囲まれながら、たくさんの思い出を重ねてきました<br>
+                    <br>
+                    学生時代の何気ない日々、社会に出てからの新しい出会い、<br>
+                    その一つひとつの経験が、今の私たちへとつながっています<br>
+                    <br>
+                    ここでは、そんな二人のルーツと出会いから今日までの思い出を、<br>
+                    少しだけご紹介したいと思います
+                    </p>
+            </div>
+            <!-- gallery bottom -->
+            <div class="container">
+                <a href="gallery.html" class="link-btn tracking-[0.5em] ">ABOUT US</a>
+            </div>
+        </section>
+
+
+
+        <!-- 5. SEATING GUIDE & ALBUM -->
+        <section id="seating-guide" class="py-24 bg-white overflow-hidden bg-white">
+            <div class="px-6 max-w-5xl mx-auto mb-16">
+                <div class="text-center mb-16 fade-up">
+                    <h2 class="font-lato text-4xl mb-2 font-light tracking-[0.25em]">GUEST</h2>
+                    <span class="text-xs tracking-widest text-wedding-accent">ご来賓の皆様</span>
+                </div>
+                <div class="text-center mb-12 fade-up">
+                    <p class="text-xs mt-6 text-wedding-text/70">
+
+                        北は北海道、南は九州まで、<br>
+                        ご遠方から私たちのために<br>
+                        集まってくれた大切な人たち。<br>
+                        <br>
+                        学生時代からの友人や、<br>
+                        社会人になって出会った仲間たち。<br>
+                        それぞれの時間の中で、<br>
+                        たくさんの思い出を重ねてきました。<br>
+                        <br>
+                        私たちの人生を彩ってくれた、<br>
+                        そんな大切な仲間たちをご紹介します。
+                    <p>
+
+                </div>
+            </div>
+
+
+                <!-- 座席表画像 -->
+                <!-- <div class="w-full p-4 rounded-xl shadow-sm fade-up border border-wedding-border/20"> -->
+                <h3 class="text-center mt-5 font-family tracking-[0.1em] font-thin text-2xl mb-5 fade-up">Seating Guide</h3>
+                <div class="w-full bg-white flex items-center justify-center border-wedding-border rounded-lg p-4">
+                    <div class="w-full aspect-[4/3] md:aspect-video bg-white flex items-center justify-center rounded-lg">
+                        <img src="https://res.cloudinary.com/dmfyysmqy/image/upload/v1772716558/%E5%B8%AD%E6%AC%A1%E8%A1%A8_y45eso.png"
+                            class="w-full h-auto opacity-80 object-cover"
+                            alt="background decorative image"
+                        />
+                    </div>
+                </div>
+                <!-- 特別ゲスト紹介 -->
+                <div class="text-center mb-12 fade-up">
+                    <h3 class="text-center mt-5 font-family tracking-[0.1em] font-thin text-2xl mb-5 fade-up">Special Guests</h3>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 px-14" >
+                    <!-- ゲスト1 -->
+                        <div class="text-center fade-up">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300" alt="Guest" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 border-2 border-wedding-bg shadow-sm">
+                            <h4 class="font-light text-sm mssb-1">KENTA SUZUKI</h4>
+                            <p class="text-[10px] text-wedding-accent mb-2">新郎 友人</p>
+                            <p class="text-xs font-light leading-tight text-wedding-text/80">大学時代の相棒。<br>今日は乾杯の挨拶をよろしく！</p>
+                        </div>
+                        <!-- ゲスト2 -->
+                        <div class="text-center fade-up" style="transition-delay: 100ms;">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300" alt="Guest" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 border-2 border-wedding-bg shadow-sm">
+                            <h4 class="font-bold text-sm mb-1">佐藤 美咲</h4>
+                            <p class="text-[10px] text-wedding-accent mb-2">新婦 友人</p>
+                            <p class="text-xs leading-tight text-wedding-text/80">いつも相談に乗ってくれる親友。スピーチありがとう。</p>
+                        </div>
+                        <!-- ゲスト3 -->
+                        <div class="text-center fade-up" style="transition-delay: 200ms;">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300" alt="Guest" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 border-2 border-wedding-bg shadow-sm">
+                            <h4 class="font-bold text-sm mb-1">高橋 誠</h4>
+                            <p class="text-[10px] text-wedding-accent mb-2">新郎 恩師</p>
+                            <p class="text-xs leading-tight text-wedding-text/80">人生の道標となってくださった恩師です。</p>
+                        </div>
+                        <!-- ゲスト4 -->
+                        <div class="text-center fade-up" style="transition-delay: 300ms;">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=300" alt="Guest" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 border-2 border-wedding-bg shadow-sm">
+                            <h4 class="font-bold text-sm mb-1">伊藤 結衣</h4>
+                            <p class="text-[10px] text-wedding-accent mb-2">新婦 姉</p>
+                            <p class="text-xs leading-tight text-wedding-text/80">私の一番の理解者。今日は一緒に楽しんでね。</p>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- 思い出の写真アルバム（自動横スクロール 2行） -->
+            <div class="w-full py-16 border-y border-wedding-border/30 fade-up">
+                <div class="text-center mb-12 fade-up">
+                    <h3 class="text-center mt-5 font-family tracking-[0.1em] font-thin text-2xl mb-5 fade-up">Memories</h3>
+                </div>
+
+                
+                <div class="space-y-6 relative w-full flex flex-col items-center">
+
+                    <div class="w-full album-container" id="container-1">
+                        <div class="album-track" id="album-track-1"></div>
+                    </div>
+
+                    <div class="w-full album-container" id="container-2">
+                        <div class="album-track" id="album-track-2"></div>
+                    </div>
+                                        
+                    <!-- 両端のグラデーションマスク -->
+                    <div class="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-[#FAF8F5] to-transparent z-10 pointer-events-none"></div>
+                    <div class="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-[#FAF8F5] to-transparent z-10 pointer-events-none"></div>
+                </div>
+
+                <!-- gallery bottom -->
+                <div class="flex justify-center">
+                    <div class="container">
+                        <a href="gallery2.html" class="link-btn mt-10 tracking-[0.5em]">GALLERY</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CUISINE -->
+        <section id="cuisine" class="py-24 px-6 max-w-5xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="font-lato text-4xl mb-2 font-light tracking-[0.25em]">CUISINE</h2>
+                <span class="text-xs tracking-widest text-wedding-accent">おもてなしの料理</span>
+                <p class="text-xs mt-6 text-wedding-text/70">
+                    皆さまのために、<br>
+                    素敵なお料理をご用意しました。<br>
+                    <br>
+                    会場の雰囲気に合わせ、<br>
+                    緑を基調とした彩り豊かな一皿一皿となっています。<br>
+                    目でも楽しめる、特別なコースです。<br>
+                    <br>
+                    念のため、新郎の友人にもわかるように、<br>
+                    料理の見どころを少しだけご紹介します。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                <div id="cuisine-grid" class="contents"></div>
+            </div>
+        </section>
+
+        <!-- 7. SPECIAL MEMORIES -->
+        <!-- <section id="our-story" class="py-24 px-6 md:px-12 max-w-3xl mx-auto relative bg-[#FAF8F5]"></section> -->
+        <section id="special-memories" class="py-24 px-6 bg-white text-wedding- relative overflow-hidden">
+
+            <div class="max-w-md mx-auto text-center relative z-10">
+                <div class="mb-12 fade-up">
+                    <h2 class="font-lato text-4xl mb-2 font-light tracking-[0.1em]">SPECIAL MEMORY</h2>
+                    <span class="text-xs tracking-widest text-wedding-accent">あなたへの特別なメッセージ</span>
+                    <p class="text-xs mt-6 text-wedding-text/70">
+                        ほんのひととき、<br>
+                        私たちとの時間を振り返ってみてください。<br>
+                        <br>
+                        幼い頃からそばで見守ってくれたあなた。<br>
+                        青春を一緒に駆け抜けたあなた。<br>
+                        グラスを片手に、夜の街を歩いたあなた。<br>
+                        <br>
+                        そのひとつひとつの記憶を、<br>
+                        小さなアーカイブとして残しました。<br>
+                        <br>
+                        お手元のテーブルに置かれたコードをご覧ください。<br>
+                        その日付は、私たちとあなたをつなぐ合言葉です。<br>
+                        <br>
+                        数字を入力すれば、<br>
+                        あの日の記憶が静かに開きます。
+
+                    </p>
+                </div>
+
+                <!-- 認証フォーム -->
+                <div id="auth-section" class="fade-up bg-black/5 p-8 rounded-2xl backdrop-blur-sm border border-wedding-accent/50 relative z-20">
+                    <p class="text-sm mb-6 leading-relaxed font-light">
+                        招待状に同封された<br>
+                        8桁のコードを入力してください
+                    </p>
+                    <div class="flex justify-center gap-2 mb-6 ">
+                        <input type="tel" id="passcode" maxlength="8" placeholder="00000000" inputmode="numeric" pattern="[0-9]*" class="w-40 bg-transparent border-b border-wedding-accent text-center text-lg font-light tracking-[0.2em] py-2 focus:outline-none focus:border-wedding-accent transition-colors placeholder:text-wedding-accent/20 font-lato relative z-30">
+                    </div>
+                    <button id="unlock-btn" class="bg-wedding-accent text-wedding-text px-10 py-3 rounded-full text-sm font-lato tracking-widest hover:bg-wedding-accent hover:text-white transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 relative z-30 cursor-pointer">
+                        UNLOCK
+                    </button>
+                    <p id="error-msg" class="text-red-400 text-xs mt-4 hidden opacity-0 transition-opacity">パスコードが正しくありません</p>
+                </div>
+
+                <!-- 隠しコンテンツ -->
+                <div id="secret-content" class="hidden fade-up space-y-8 mt-8">
+                    <h3 class="p-20 font-bold border-b border-wedding-border/30 pb-4 inline-block px-4 font-lato tracking-widest">
+                    <span id="guest-name" class="text-wedding-accent"></span>
+                    </h3>
+                    
+                    <div class="bg-white/10 p-2 rounded-xl backdrop-blur-md text-left">
+                        <p id="guest-message" class="text-sm leading-loose font-light"></p>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <p class="text-[10px] mb-3 text-wedding-border tracking-widest uppercase font-lato">♪ Our Memories photo</p>
+                        <div class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-wedding-bg/20 photo-effect-container">
+                            <img id="guest-image" src="" alt="Memory" class="w-full h-full object-cover photo-effect">
+                        </div>              
+                    </div>
+                        
+                    <div class="mt-8">
+                        <p class="text-[10px] mb-3 text-wedding-border tracking-widest uppercase font-lato">♪ Our Memories Song</p>
+                        <div id="spotify-container" class="rounded-xl overflow-hidden shadow-lg"></div>
+                    </div>
+                    
+                    <button id="back-btn" class="mt-8 text-xs tracking-widest text-wedding-border/60 hover:text-wedding-bg transition-colors flex items-center justify-center gap-2 mx-auto py-4">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i> BACK TO LOGIN
+                    </button>
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white py-16 text-center border-t border-wedding-border/20 relative z-10">
+        <h2 class="font-lato text-2xl tracking-[0.3em] mb-4 font-light">YUSAKU & SAORI</h2>
+        <p class="font-lato text-xs tracking-[0.2em] text-wedding-text/40 mb-2">2026.9.12</p>
+        <p class="text-[10px] text-wedding-text/30 font-light">Thank you for coming to our wedding.</p>
+    </footer>
+
+    <!-- ==========================================
+         JavaScript セクション
+         ========================================== -->
+    <script>
+        // 地図ポイント位置
+        const storyData = [
+            { id: 'tokyo', x: '59%', y: '62%', title: 'TOKYO', date: '2019.4〜2021.3', desc: '大学院への進学を機に新郎は東京へ。距離は離れてしまいましたが、遠距離恋愛という新しい時間が始まりました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/tokyo.jpg' },
+            { id: 'kawasaki', x: '57%', y: '66%', title: 'KAWASAKI', date: '2024.8〜', desc: '7年の時を経て、同棲生活がスタート。ずっと一緒にいられるという新鮮な喜びと、嵐のような毎日が始まりました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/kawasaki.jpg' },
+            { id: 'ibaraki', x: '62%', y: '58%', title: 'IBARAKI', date: '2021.4〜2022.12', desc: '新郎が社会人として初めて配属された場所。毎日苦戦ばかりの新郎のもとへ、新婦が何度も会いに来てくれました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/ibaraki.jpg' },
+            { id: 'Kanazawa', x: '46%', y: '60%', title: 'KANAZAWA', date: '2017.4〜2020.3', desc: '二人が出会った、かけがえのない思い出の場所。私たちの物語はここから始まりました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/kanazawa.jpg' },
+            { id: 'Tsushima', x: '16%', y: '70%', title: 'TSUSHIMA', date: '2023.8〜2024.1', desc: '初新婦の転職をきっかけに、生活の舞台は離島へ。飛行機を二度乗り継ぎ、時には台風と競走しながら会いに行きました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/tsushima.jpg' },
+            { id: 'Nagoya', x: '48%', y: '67%', title: 'NAGOYA', date: '2020.4〜2023.7', desc: '新婦が社会人として新しい生活を始めた場所。夜勤明けで眠い目をこすりながらも待ち合わせをして、二人でいろいろな場所へ出かけました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/nagoya.jpg' },
+            { id: 'Aomori', x: '61%', y: '40%', title: 'AOMORI', date: '2023.1〜2024.8', desc: '新郎の転勤に伴い、本州最北端の地へ。縁もゆかりのなかった土地でしたが、この地を知るよい機会になりました。新幹線を降りてすぐ、雪道で転んだ新婦を忘れられません。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/aomori.jpg' },
+            { id: 'Cambodia', x: '20%', y: '20%', title: 'CAMBODIA', date: '2024.2〜2025.2', desc: '新婦が人生最大のチャレンジとして海外へ。1年間、会えない時間を過ごしましたが、強く逞しくなって帰ってきました。離れていた時間も、二人の絆をさらに深めてくれました。', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/cambodia.jpg' }
+        ];
+        // スクロールされる写真集
+        const realAlbumImages = [
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_01.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_02.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_03.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_04.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_05.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_06.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_07.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_08.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_09.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_10.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_11.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_12.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_13.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_14.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_15.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_16.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_17.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_18.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_19.jpg',
+            'https://res.cloudinary.com/dmfyysmqy/image/upload/guest_20.jpg',
+
+            
+
+        ];
+        // コース料理について
+        const cuisineData = [
+            { name: 'Amuse', jp: '一口の微笑み', desc: '季節の野菜を使ったアミューズ', img: 'https://res.cloudinary.com/dmfyysmqy/image/upload/v1772807596/%E6%96%99%E7%90%86%EF%BC%92_gah53w.webp' },
+            { name: 'Appetizer', jp: '海の幸のマリネ', desc: '新鮮な魚介と柑橘の爽やかな前菜', img: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&q=80&w=600' },
+            { name: 'Soup', jp: '季節のポタージュ', desc: '素材の甘みを引き出した温かいスープ', img: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&q=80&w=600' },
+            { name: 'Poisson', jp: '真鯛のポワレ', desc: '白ワインソースとハーブの香り', img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=600' },
+            { name: 'Viande', jp: '国産牛フィレ肉のロティ', desc: '特製トリュフソースを添えて', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=600' },
+            { name: 'Dessert', jp: '特製ウェディングケーキ', desc: 'パティシエ特製の甘い贈り物', img: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600' }
+        ];
+        // 友人コード集
+        const guestData = [
+            { code: '11223344', name: 'KENTA SUZUKI', message: '健太、今日は来てくれて本当にありがとう。<br>これからもよろしく！', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&q=80&w=600', spotifyTrack: '4cOdK2wGLETKBW3PvgPWqT' },
+            { code: '44332211', name: '佐藤 美咲', message: '美咲、今日はありがとう。<br>これからもずっと親友でいてね！', image: 'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&q=80&w=600', spotifyTrack: '3AJwUDP919kvQ9QcozQPxg' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // --- ロゴクリックで一番上へ戻る ---
+            document.getElementById('logo-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- ポップアップメニュー制御 (修正済) ---
+            const menuBtn = document.getElementById('menu-btn');
+            const overlayMenu = document.getElementById('overlay-menu');
+            const menuContent = document.getElementById('menu-content');
+            const menuLinks = document.querySelectorAll('.menu-link');
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    overlayMenu.classList.remove('hidden');
+                    // 1フレーム待ってからアニメーション開始
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            overlayMenu.classList.remove('opacity-0');
+                            menuContent.classList.remove('scale-95', 'opacity-0');
+                            menuContent.classList.add('scale-100', 'opacity-100');
+                        });
+                    });
+                    menuBtn.innerHTML = '<i data-lucide="x" class="w-6 h-6 text-wedding-text"></i>';
+                } else {
+                    overlayMenu.classList.add('opacity-0');
+                    menuContent.classList.remove('scale-100', 'opacity-100');
+                    menuContent.classList.add('scale-95', 'opacity-0');
+                    menuBtn.innerHTML = '<i data-lucide="menu" class="w-6 h-6 text-wedding-text"></i>';
+                    // アニメーション完了後に完全に隠す
+                    setTimeout(() => {
+                        if (!isMenuOpen) overlayMenu.classList.add('hidden');
+                    }, 500);
+                }
+                lucide.createIcons();
+            }
+
+            menuBtn.addEventListener('click', toggleMenu);
+            menuLinks.forEach(link => link.addEventListener('click', () => {
+                if(isMenuOpen) toggleMenu();
+            }));
+            overlayMenu.addEventListener('click', (e) => {
+                if(e.target === overlayMenu) toggleMenu();
+            });
+
+            // --- スクロールアニメーション ---
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+            // --- ヘッダーの背景制御 ---
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('shadow-sm', window.scrollY > 50);
+            });
+
+            // --- Our Story: マップピンとモーダル (修正済) ---
+            const mapContainer = document.getElementById('map-pins-container');
+            const storyModal = document.getElementById('story-modal');
+            const storyModalContent = document.getElementById('story-modal-content');
+            
+            storyData.forEach((story) => {
+                const pinWrap = document.createElement('div');
+                // pinWrap.className = 'absolute w-10 h-10 -ml-5 -mt-10 flex items-center justify-center cursor-pointer group';
+                //pinWrap.className = 'absolute w-8 h-8 -ml-4 -mt-8 flex items-center justify-center cursor-pointer group';
+                //pinWrap.className = 'absolute w-[4vw] h-[4vw] max-w-[32px] max-h-[32px] -ml-4 -mt-8 flex items-center justify-center cursor-pointer group';
+
+                pinWrap.className = 'absolute w-4 h-4 flex items-center justify-center cursor-pointer group';
+                pinWrap.style.transform = "translate(-50%, -100%)";
+
+                pinWrap.style.left = story.x;
+                pinWrap.style.top = story.y;
+                
+                pinWrap.innerHTML = `
+                    <span class="absolute inline-flex h-full w-full rounded-full bg-wedding-accent opacity-50 group-hover:opacity-80 animate-ping"></span>
+                    <i data-lucide="map-pin" class="relative z-10 w-5 h-5 text-wedding-text group-hover:text-wedding-accent transition-colors drop-shadow-md"></i>
+                `;
+                
+                pinWrap.addEventListener('click', () => {
+                    document.getElementById('story-img').src = story.img;
+                    document.getElementById('story-date').textContent = story.date;
+                    document.getElementById('story-title').textContent = story.title;
+                    document.getElementById('story-desc').textContent = story.desc;
+                    
+                    // 表示してアニメーション
+                    storyModal.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            storyModal.classList.remove('opacity-0');
+                            storyModalContent.classList.remove('scale-95');
+                        });
+                    });
+                });
+                mapContainer.appendChild(pinWrap);
+            });
+            lucide.createIcons();
+
+            const closeModal = () => {
+                storyModal.classList.add('opacity-0');
+                storyModalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    storyModal.classList.add('hidden');
+                }, 300);
+            };
+            document.querySelectorAll('.modal-bg, .modal-close').forEach(el => el.addEventListener('click', closeModal));
+
+            // --- 横スクロールアルバム生成 & ドラッグ・自動スクロール制御 ---
+            const track1 = document.getElementById('album-track-1');
+            const track2 = document.getElementById('album-track-2');
+
+            const halfIndex = Math.ceil(realAlbumImages.length / 2);
+            const row1Images = realAlbumImages.slice(0, halfIndex);
+            const row2Images = realAlbumImages.slice(halfIndex);
+
+            function buildTrack(container, images) {
+                if (!container) return;
+                // 無限ループのために3セット連結する
+                const content = images.map(src => `
+                    <div class="w-40 md:w-56 aspect-[4/3] shrink-0 photo-effect-container rounded-md shadow-sm mx-2">
+                        <img src="${src}" class="w-full h-full object-cover photo-effect rounded-md pointer-events-none">
+                    </div>
+                `).join('');
+                container.innerHTML = content + content + content;
+            }
+
+            buildTrack(track1, row1Images);
+            buildTrack(track2, row2Images);
+
+            function initInfiniteScroll(containerId, speed) {
+                const container = document.getElementById(containerId);
+                const track = container.firstElementChild;
+                
+                let isDragging = false;
+                let startX;
+                let scrollLeft;
+                let scrollPos = 0;
+
+                // 初期位置を中央（2セット目の開始位置）に設定
+                setTimeout(() => {
+                    scrollPos = track.offsetWidth / 3;
+                    container.scrollLeft = scrollPos;
+                }, 100);
+
+                // --- 自動スクロール ---
+                function animate() {
+                    if (!isDragging) {
+                        scrollPos += speed;
+                        
+                        // 無限ループ判定
+                        const oneThird = track.offsetWidth / 3;
+                        if (scrollPos >= oneThird * 2) {
+                            scrollPos -= oneThird;
+                        } else if (scrollPos <= 0) {
+                            scrollPos += oneThird;
+                        }
+                        
+                        container.scrollLeft = scrollPos;
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                // --- ドラッグ・スワイプイベント ---
+                const startDragging = (e) => {
+                    isDragging = true;
+                    container.style.scrollBehavior = 'auto';
+                    startX = (e.pageX || e.touches[0].pageX) - container.offsetLeft;
+                    scrollLeft = container.scrollLeft;
+                };
+
+                const stopDragging = () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    // ドラッグ終了時の位置を自動スクロールに引き継ぐ
+                    scrollPos = container.scrollLeft;
+                };
+
+                const moveDragging = (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = (e.pageX || e.touches[0].pageX) - container.offsetLeft;
+                    const walk = (x - startX); 
+                    container.scrollLeft = scrollLeft - walk;
+                    
+                    // ドラッグ中もループ処理を適用（端に行き過ぎないように）
+                    const oneThird = track.offsetWidth / 3;
+                    if (container.scrollLeft >= oneThird * 2) {
+                        container.scrollLeft -= oneThird;
+                        scrollLeft -= oneThird;
+                    } else if (container.scrollLeft <= 0) {
+                        container.scrollLeft += oneThird;
+                        scrollLeft += oneThird;
+                    }
+                };
+
+                // マウスイベント
+                container.addEventListener('mousedown', startDragging);
+                window.addEventListener('mouseup', stopDragging);
+                window.addEventListener('mousemove', moveDragging);
+
+                // タッチイベント
+                container.addEventListener('touchstart', startDragging, { passive: false });
+                container.addEventListener('touchend', stopDragging);
+                container.addEventListener('touchmove', moveDragging, { passive: false });
+
+                // アニメーション開始
+                requestAnimationFrame(animate);
+            }
+
+            // 実行（第2引数でスピード調整：正の数で左へ、負の数で右へ流れます）
+            initInfiniteScroll('container-1', 1.0);
+            initInfiniteScroll('container-2', -0.8);
+
+
+
+
+
+            // --- Cuisine生成 ---
+            const cuisineGrid = document.getElementById('cuisine-grid');
+            cuisineData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'fade-up flex flex-col group';
+                div.style.transitionDelay = `${(index % 3) * 100}ms`;
+                div.innerHTML = `
+                    <div class="overflow-hidden rounded-md mb-4 aspect-[5/2] photo-effect-container">
+                        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover photo-effect">
+                    </div>
+                    <h3 class="font-lato text-xl mb-1">${item.name}</h3>
+                    <p class="text-[10px] text-wedding-accent mb-2 font-bold">${item.jp}</p>
+                    <p class="text-xs text-wedding-text/70 font-light">${item.desc}</p>
+                `;
+                cuisineGrid.appendChild(div);
+                observer.observe(div);
+            });
+
+            // --- パスコード制御 ---
+            const unlockBtn = document.getElementById('unlock-btn');
+            const backBtn = document.getElementById('back-btn');
+            const passcodeInput = document.getElementById('passcode');
+            const errorMsg = document.getElementById('error-msg');
+            const authSection = document.getElementById('auth-section');
+            const secretContent = document.getElementById('secret-content');
+            
+            // 入力を数字のみに制限
+            passcodeInput.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            function attemptUnlock() {
+                const code = passcodeInput.value.trim();
+                const guest = guestData.find(g => g.code === code);
+
+                if (guest) {
+                    errorMsg.classList.add('hidden', 'opacity-0');
+                    document.getElementById('guest-name').textContent = guest.name;
+                    document.getElementById('guest-message').innerHTML = guest.message;
+                    document.getElementById('guest-image').src = guest.image;
+                    
+                    document.getElementById('spotify-container').innerHTML = `
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${guest.spotifyTrack}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    `;
+
+
+
+
+                    authSection.style.display = 'hidden';
+                    secretContent.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        unlockBtn .scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+                        }, 200);
+
+                    setTimeout(() => secretContent.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                } else {
+                    errorMsg.classList.remove('hidden');
+                    setTimeout(() => errorMsg.classList.remove('opacity-0'), 10);
+                    passcodeInput.classList.add('border-red-400', 'text-red-400');
+                    setTimeout(() => passcodeInput.classList.remove('border-red-400', 'text-red-400'), 1000);
+                    passcodeInput.value = '';
+                    passcodeInput.focus();
+
+                }
+            }
+            
+            // --- 個別ページから戻りたいけどうまくいっていない。---
+            backBtn.onclick = () => {
+                secretContent.classList.remove('show');
+                setTimeout(() => {
+                    secretContent.classList.add('hidden');
+                    authSection.classList.remove('hidden');
+                    passcodeInput.value = '';
+                }, 400);
+            };
+
+
+            unlockBtn.addEventListener('click', attemptUnlock);
+            passcodeInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') attemptUnlock();
+            });
+        });
+    </script>
+</body>
+</html>
