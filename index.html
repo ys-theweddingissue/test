@@ -353,13 +353,14 @@
                     その距離があったからこそお互いの大切さを知り、<br>
                     ふたりの絆はより深まったように思います。
                 </p>
-
             </div>
 
             <!-- マップエリア -->
             <!-- <div class="relative w-full aspect-[4/5] md:aspect-square bg-white border border-wedding-border p-4 rounded-xl shadow-sm fade-up"> -->
             <div class="relative w-full mx-auto aspect-square bg-white border border-wedding-border p-4 rounded-xl shadow-sm fade-up">
-
+                <p class="text-xs mt-1 mb-4 text-wedding-text/70 text-center">
+                    TAP TO ICONS
+                </p>
                 <!-- 日本地図（JPG） -->
                 <img src="https://res.cloudinary.com/dmfyysmqy/image/upload/v1772634562/Gemini_Generated_Image_wphffmwphffmwphf_hdtluq_rbwy0g.png"
                   class="w-full h-full opacity-50 object-cover"
@@ -389,7 +390,7 @@
                 </div>
             </div>
             <div class="text-center mb-12 fade-up">
-                <p class="text-xs mt-6 text-wedding-text/70">
+                <p class="text-xs mt-12 text-wedding-text/70">
                     それぞれの街で育ち、それぞれの時間を過ごしてきた私たち<br>
                     家族や友人に囲まれながら、たくさんの思い出を重ねてきました<br>
                     <br>
@@ -399,11 +400,12 @@
                     ここでは、そんな二人のルーツと出会いから今日までの思い出を、<br>
                     少しだけご紹介したいと思います
                     </p>
+
+                <div class="container">
+                    <a href="gallery.html" class="link-btn mt-5 tracking-[0.5em] ">ABOUT US</a>
+                </div>
             </div>
-            <!-- gallery bottom -->
-            <div class="container">
-                <a href="gallery.html" class="link-btn tracking-[0.5em] ">ABOUT US</a>
-            </div>
+
         </section>
 
 
@@ -591,14 +593,20 @@
                     </div>
                     
                     <div class="mt-8">
-                        <p class="text-[10px] mb-3 text-wedding-border tracking-widest uppercase font-lato">♪ Our Memories photo</p>
+                        <p class="text-[16px] mb-3 text-wedding-border tracking-widest uppercase font-lato">Memories Photo From That Day</p>
                         <div class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-wedding-bg/20 photo-effect-container">
                             <img id="guest-image" src="" alt="Memory" class="w-full h-full object-cover photo-effect">
-                        </div>              
+                            <p id="" class="text-sm leading-loose font-light"></p>
+                        </div>  
+                        <div class="bg-white/10 p-2 rounded-xl backdrop-blur-md text-right">
+                            <p id="guest-caption" class="text-xs leading-loose font-light"></p>
+                        </div>                
                     </div>
-                        
+
+                    
+                    
                     <div class="mt-8">
-                        <p class="text-[10px] mb-3 text-wedding-border tracking-widest uppercase font-lato">♪ Our Memories Song</p>
+                        <p class="text-[16px] mb-3 text-wedding-border tracking-widest uppercase font-lato">Memories Song</p>
                         <div id="spotify-container" class="rounded-xl overflow-hidden shadow-lg"></div>
                     </div>
                     
@@ -670,9 +678,19 @@
         ];
         // 友人コード集
         const guestData = [
-            { code: '11223344', name: 'KENTA SUZUKI', message: '健太、今日は来てくれて本当にありがとう。<br>これからもよろしく！', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&q=80&w=600', spotifyTrack: '4cOdK2wGLETKBW3PvgPWqT' },
-            { code: '44332211', name: '佐藤 美咲', message: '美咲、今日はありがとう。<br>これからもずっと親友でいてね！', image: 'https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&q=80&w=600', spotifyTrack: '3AJwUDP919kvQ9QcozQPxg' }
-        ];
+
+            {code: '20150731', name: 'たきざわくん', message: '今日は遠いところありがとう<br>ヒルナンデス結成前になんで仲良くなったのかを考えていたのだけど、<br>休講かなんかで、アナ雪行ったからかな？', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_13.jpg', caption: '写真が時代を物語ってるね', spotifyTrack: '2AhSP4LZwFfCnCsIvS8WpR'},
+            {code: '20170613', name: 'あみちゃん', message: '愛しの亜美よ、今日はありがとう<br>しっかり者なのかボケてるのかお色気なのか<br>たくさんの思い出がありすぎます', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_14.jpg', caption: '初IKEAをあなたと過ごせてよかった', spotifyTrack: '0ZGSqq2w7og9UQyWYBXLSq'},
+            {code: '20181006', name: 'あやみ', message: 'アンタはもうマブのマブ<br>どのメンツで遊ぶ時もアンタがいて<br>激しい恋愛話なり愚痴を聞いたり<br>青春時代を過ごした近隣住民だったな<br>これからもよろしく', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_15.jpg', caption: '富士急、帰りに姨捨からえびす溝', spotifyTrack: '1N2DZRohRTVAcdNXmZFCoq'},
+            {code: '20180103', name: 'ひろと', message: '少し大人びて、スカしてるあんたがいいんですよね。<br>桃鉄数百年の歴史に恥じぬよう、残りの人生数十年も仲良くしてくださいな', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_16.jpg', caption: '太一くんのお土産', spotifyTrack: '1IvgIMMVwy6wKnVvqypXLu'},
+            {code: '20170909', name: 'さえき', message: '勉強も仕事も酒も女も、あんたが大将<br>女はよくわからんか<br>色んな一面を尊敬してるよ、僕も僕の母親も、これからもよろしく', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_17.jpg', caption: '卒業して初めての横浜サシ飲み', spotifyTrack: '20cqyJ41ZDro5ElNtAugxn'},
+            {code: '20180303', name: '井上', message: '', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_18.jpg', caption: '４組時代の戯れ', spotifyTrack: '23phSRwoMy48rwFpmuAP8q'},
+            {code: '20061028', name: '岡田', message: '', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_19.jpg', caption: '東海大会へ向かうバス<br>カラオケくそ盛り上がった', spotifyTrack: '0oYBNdC84K2BEWHHsnYOPw'},
+            {code: '', name: '', message: '', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_20.jpg', caption: '', spotifyTrack: '471JGLzHPrgM4lS9mNOEIt'},
+            {code: '20170613', name: 'こやげ', message: '', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_21.jpg', caption: '俺たちのソース焼きそば', spotifyTrack: '471JGLzHPrgM4lS9mNOEIt'},
+            {code: '20150924', name: 'シナ', message: '男の中の男', image: 'https://res.cloudinary.com/dmfyysmqy/image/upload/memory_22.jpg', caption: '上田リリイベ<br>この式場でスダンナも挙式してます', spotifyTrack: '6C9glhqKcHMCd95ipyGi7w'},
+        ]
+
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -941,6 +959,7 @@
                     document.getElementById('guest-name').textContent = guest.name;
                     document.getElementById('guest-message').innerHTML = guest.message;
                     document.getElementById('guest-image').src = guest.image;
+                    document.getElementById('guest-caption').innerHTML = guest.caption;
                     
                     document.getElementById('spotify-container').innerHTML = `
                         <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/${guest.spotifyTrack}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
